@@ -1,0 +1,8 @@
+spring:
+  main:
+    web-application-type: none
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate.session_factory.statement_inspector: com.example.hibernatedemo.utils.HibernateStatisticsCollector
