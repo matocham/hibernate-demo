@@ -1,8 +1,19 @@
 spring:
   main:
     web-application-type: none
+  datasource:
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 10
+      idle-timeout: 600000
+      connection-timeout: 30000
+      max-lifetime: 1800000
   jpa:
     hibernate:
       ddl-auto: create
     properties:
       hibernate.session_factory.statement_inspector: com.example.hibernatedemo.utils.HibernateStatisticsCollector
+
+logging:
+  level:
+    net.ttddyy.dsproxy.listener: debug

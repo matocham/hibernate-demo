@@ -1,3 +1,6 @@
 spring:
   application:
     name: hibernate-demo
+  jpa:
+    properties:
+      hibernate.id.optimizer.pooled.preferred: pooled-lo
