@@ -6,6 +6,7 @@ import jakarta.persistence.*
 @Entity
 @Table(name = ManualIdPost.TABLE_NAME)
 class ManualIdPost(id: Long, title: String): ComparableEntity() {
+
     companion object {
         const val TABLE_NAME = "manual_posts"
     }

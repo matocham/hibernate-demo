@@ -14,6 +14,7 @@ import com.example.hibernatedemo.onetomany.version.VersionIdentityPostComment
 import com.example.hibernatedemo.onetomany.version.VersionSeqPost
 import com.example.hibernatedemo.onetomany.version.VersionSeqPostComment
 import com.example.hibernatedemo.single.PrimitiveIdPost
+import org.amshove.kluent.shouldBeEqualTo
 import org.junit.jupiter.api.Test
 
 class PersistAndMergeTest : BaseDbTest() {
@@ -434,5 +435,28 @@ class PersistAndMergeTest : BaseDbTest() {
             entityManager.remove(entityManager.getReference(PrimitiveIdPost::class.java, post.id))
         }
         db.checkDeleteCount(1, PrimitiveIdPost.TABLE_NAME)
+    }
+
+    @Test
+    fun `detaching an entity cancels all changes made to it if they were not flushed`() {
+        // given
+        val postId = transaction {
+            val post = VersionIdentityPost("title")
+            entityManager.persist(post)
+
+            db.checkInsertCount(1, VersionIdentityPost.TABLE_NAME)
+
+            post.title = "changed"
+            entityManager.detach(post)
+            post.id
+        }
+
+        db.checkUpdateCount(0, VersionIdentityPost.TABLE_NAME)
+
+        transaction {
+            val updatedPost = entityManager.find(VersionIdentityPost::class.java, postId)
+            updatedPost.title shouldBeEqualTo "title"
+        }
+        db.checkQueryCount(1, VersionIdentityPost.TABLE_NAME)
     }
 }

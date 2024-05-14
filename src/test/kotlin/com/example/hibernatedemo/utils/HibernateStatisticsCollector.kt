@@ -55,7 +55,7 @@ class HibernateStatisticsCollector : StatementInspector {
 
     private fun Matcher.getAllMatches(): List<String> {
         val matches = mutableSetOf<String>()
-        if (find()) {
+        while (find()) {
             matches.add(group(1))
         }
         return matches.toList()

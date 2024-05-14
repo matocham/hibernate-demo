@@ -164,7 +164,7 @@ private fun Map<HibernateStatistics.DmlSpec, AtomicLong>.sumForTable(
     return if (joins.isEmpty() && !strict) {
         entries.filter { it.key.mainTableName == tableName }.sumOf { it.value.get() }
     } else {
-        return entries.filter { it.key.mainTableName == tableName && joins.containsAll(it.key.joinedTables) }
+        return entries.filter { it.key.mainTableName == tableName && joins == it.key.joinedTables }
             .sumOf { it.value.get() }
     }
 }
